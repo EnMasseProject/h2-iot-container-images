@@ -1,0 +1,37 @@
+insertCredentialEntry: |
+   INSERT INTO %2$s (
+      tenant_id,
+      device_id,
+      type,
+      auth_id,
+      data
+   ) VALUES (
+      :tenant_id,
+      :device_id,
+      :type,
+      :auth_id,
+      :data FORMAT JSON
+   )
+
+readCredentials: |
+   SELECT
+      utf8tostring(data) as data
+   FROM
+      %2$s
+   WHERE
+      tenant_id=:tenant_id
+   AND
+      device_id=:device_id
+
+findCredentials: |
+   SELECT
+      device_id,
+      utf8tostring(data) as data
+   FROM
+      %2$s
+   WHERE
+      tenant_id=:tenant_id
+   AND
+      auth_id=:auth_id
+   AND
+      type=:type
